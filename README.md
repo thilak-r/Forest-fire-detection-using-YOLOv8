@@ -1,4 +1,4 @@
-# 🔥 Deep Learning Based Real-Time Forest Fire Detection from Live Feed
+# 🔥 ML Based Real-Time Forest Fire Detection from Live Feed
 
 A powerful computer vision system that leverages YOLOv8 for detecting **fire** and **smoke** from:
 - 🌄 Uploaded images
