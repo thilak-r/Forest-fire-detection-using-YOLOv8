@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forest Fire Detection - AI Powered Monitoring System</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #ff6b35;
+      --secondary-color: #f7931e;
+      --accent-color: #4ecdc4;
+      --dark-bg: #0a0a0a;
+      --dark-surface: #1a1a1a;
+      --dark-card: #2a2a2a;
+      --dark-text: #ffffff;
+      --dark-text-secondary: #b0b0b0;
+      --light-bg: #ffffff;
+      --light-surface: #f8f9fa;
+      --light-card: #ffffff;
+      --light-text: #2c3e50;
+      --light-text-secondary: #6c757d;
+      --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      --shadow: 0 10px 30px rgba(0,0,0,0.1);
+      --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+      --border-radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: var(--dark-bg);
+      --surface-color: var(--dark-surface);
+      --card-color: var(--dark-card);
+      --text-color: var(--dark-text);
+      --text-secondary: var(--dark-text-secondary);
+      --border-color: #333;
+    }
+
+    [data-theme="light"] {
+      --bg-color: var(--light-bg);
+      --surface-color: var(--light-surface);
+      --card-color: var(--light-card);
+      --text-color: var(--light-text);
+      --text-secondary: var(--light-text-secondary);
+      --border-color: #e9ecef;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: var(--transition);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--card-color);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+
+    .nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .logo i {
+      font-size: 2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .theme-toggle {
+      background: var(--surface-color);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(180deg) scale(1.1);
+      border-color: var(--primary-color);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .logout-btn:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 160px);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding: 4rem 0;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Cards */
+    .detection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--card-color);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--surface-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface-color);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Image Results */
+    .img-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .img-result {
+      text-align: center;
+    }
+
+    .img-result h3 {
+      margin-bottom: 1rem;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .img-result img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .img-result img:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Stream Container */
+    .stream-container {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 2rem;
+      background: var(--surface-color);
+      border-radius: var(--border-radius);
+      border: 2px dashed var(--border-color);
+    }
+
+    .stream-container img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Real-time Section */
+    .realtime-section {
+      text-align: center;
+      padding: 3rem;
+      background: var(--surface-color);
+      border-radius: var(--border-radius);
+      margin-top: 2rem;
+    }
+
+    /* Auth Forms */
+    .auth-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .auth-form {
+      background: var(--card-color);
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 450px;
+      margin: 2rem;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .auth-toggle {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .auth-toggle a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-toggle a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--card-color);
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Loading */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 80px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .detection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .img-container {
+        grid-template-columns: 1fr;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+    }
+
+    /* Hide main content when not authenticated */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <!-- Auth Container -->
+  <div id="auth-container" class="auth-container">
+    <!-- Sign In Form -->
+    <form id="signin-form" class="auth-form">
+      <div class="auth-header">
+        <h2><i class="fas fa-fire"></i> Welcome Back</h2>
+        <p>Sign in to access the Forest Fire Detection System</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="signin-username">Username or Email</label>
+        <input type="text" id="signin-username" class="form-control" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="signin-password">Password</label>
+        <input type="password" id="signin-password" class="form-control" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-full">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign In
+      </button>
+      
+      <div class="auth-toggle">
+        <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up here</a></p>
+      </div>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form id="signup-form" class="auth-form hidden">
+      <div class="auth-header">
+        <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+        <p>Join the Forest Fire Detection System</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="signup-username">Username</label>
+        <input type="text" id="signup-username" class="form-control" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="signup-email">Email</label>
+        <input type="email" id="signup-email" class="form-control" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" class="form-control" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="signup-confirm">Confirm Password</label>
+        <input type="password" id="signup-confirm" class="form-control" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-full">
+        <i class="fas fa-user-plus"></i>
+        Create Account
+      </button>
+      
+      <div class="auth-toggle">
+        <p>Already have an account? <a href="#" onclick="showSignin()">Sign in here</a></p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Header -->
+  <header class="header hidden" id="main-header">
+    <nav class="nav">
+      <div class="logo">
+        <i class="fas fa-fire"></i>
+        <span>FireWatch AI</span>
+      </div>
+      
+      <ul class="nav-links">
+        <li><a href="#image-detection"><i class="fas fa-image"></i> Image Detection</a></li>
+        <li><a href="#video-stream"><i class="fas fa-video"></i> Video Stream</a></li>
+        <li><a href="#realtime"><i class="fas fa-camera"></i> Real-time</a></li>
+      </ul>
+      
+      <div class="user-menu">
+        <div class="user-info">
+          <i class="fas fa-user-circle"></i>
+          <span id="username-display">User</span>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <i class="fas fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main hidden" id="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>AI-Powered Forest Fire Detection</h1>
+      <p>Advanced computer vision technology for early forest fire detection and monitoring. Upload images, stream videos, or use real-time camera feed for instant fire detection.</p>
+    </section>
+
+    <!-- Detection Grid -->
+    <div class="detection-grid">
+      <!-- Image Detection Card -->
+      <div class="card" id="image-detection">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-image"></i>
+          </div>
+          <h2>Image Detection</h2>
+        </div>
+        
+        <form id="img-form" action="/upload_image" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="image-upload">Select Image File</label>
+            <input type="file" id="image-upload" name="file" class="form-control" accept="image/*" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-search"></i>
+            <span class="btn-text">Detect Fire</span>
+            <span class="loading hidden"></span>
+          </button>
+        </form>
+        
+        <div class="img-container">
+          <div class="img-result">
+            <h3>Original Image</h3>
+            <img id="orig-img" style="display: none;" />
+            <div id="orig-placeholder" style="padding: 3rem; background: var(--surface-color); border-radius: 12px; color: var(--text-secondary);">
+              <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+              Original image will appear here
+            </div>
+          </div>
+          <div class="img-result">
+            <h3>Detection Result</h3>
+            <img id="result-img" style="display: none;" />
+            <div id="result-placeholder" style="padding: 3rem; background: var(--surface-color); border-radius: 12px; color: var(--text-secondary);">
+              <i class="fas fa-fire" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+              Detection result will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Stream Card -->
+      <div class="card" id="video-stream">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h2>Video Stream Detection</h2>
+        </div>
+        
+        <form id="stream-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="stream-video-file">Select Video File</label>
+            <input type="file" id="stream-video-file" class="form-control" accept="video/*" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-play"></i>
+            <span class="btn-text">Start Stream</span>
+            <span class="loading hidden"></span>
+          </button>
+        </form>
+        
+        <div id="stream-container" class="stream-container">
+          <i class="fas fa-video" style="font-size: 3rem; margin-bottom: 1rem; display: block; color: var(--text-secondary);"></i>
+          <p style="color: var(--text-secondary);">Video stream will appear here</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Detection -->
+    <section class="realtime-section" id="realtime">
+      <div class="card-header" style="justify-content: center; margin-bottom: 2rem;">
+        <div class="card-icon">
+          <i class="fas fa-camera"></i>
+        </div>
+        <h2>Real-Time Camera Detection</h2>
+      </div>
+      <p style="margin-bottom: 2rem; color: var(--text-secondary);">Launch real-time forest fire detection using your camera feed</p>
+      <button class="btn btn-primary" onclick="window.open('http://127.0.0.1:5001/', '_blank')">
+        <i class="fas fa-external-link-alt"></i>
+        Launch Real-Time Detection
+      </button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer hidden" id="main-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+              <a href="#" title="An AI system to detect forest fires with high accuracy.">
+        <i class="fas fa-info-circle"></i> About
+      </a>
+      <a href="#" title="We do not collect or store any personal data.">
+        <i class="fas fa-shield-alt"></i> Privacy
+      </a>
+        <a href="mailto:thilak22005@gmail.com"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="https://github.com/thilak-r"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+      <p>&copy; 2024 FireWatch AI. Advanced Forest Fire Detection System.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Database operations (simulated with in-memory storage)
+    let users = JSON.parse(localStorage.getItem('firewatch_users') || '[]');
+    let currentUser = JSON.parse(localStorage.getItem('firewatch_current_user') || 'null');
+
+    // Check if user is logged in on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      if (currentUser) {
+        showMainApp();
+      }
+    });
+
+    // Auth functions
+    function showSignup() {
+      document.getElementById('signin-form').classList.add('hidden');
+      document.getElementById('signup-form').classList.remove('hidden');
+    }
+
+    function showSignin() {
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('signin-form').classList.remove('hidden');
+    }
+
+    function showMainApp() {
+      document.getElementById('auth-container').classList.add('hidden');
+      document.getElementById('main-header').classList.remove('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+      document.getElementById('main-footer').classList.remove('hidden');
+      
+      if (currentUser) {
+        document.getElementById('username-display').textContent = currentUser.username;
+      }
+    }
+
+    function hideMainApp() {
+      document.getElementById('auth-container').classList.remove('hidden');
+      document.getElementById('main-header').classList.add('hidden');
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('main-footer').classList.add('hidden');
+    }
+
+    // Sign up handler
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('signup-username').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+      
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      
+      if (users.find(u => u.username === username || u.email === email)) {
+        alert('Username or email already exists!');
+        return;
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        username: username,
+        email: email,
+        password: password, // In real app, this should be hashed
+        createdAt: new Date().toISOString()
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('firewatch_users', JSON.stringify(users));
+      
+      currentUser = { id: newUser.id, username: newUser.username, email: newUser.email };
+      localStorage.setItem('firewatch_current_user', JSON.stringify(currentUser));
+      
+      alert('Account created successfully!');
+      showMainApp();
+    });
+
+    // Enhanced sign in handler
+    document.getElementById('signin-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const usernameOrEmail = document.getElementById('signin-username').value.trim();
+      const password = document.getElementById('signin-password').value;
+      
+      if (!usernameOrEmail || !password) {
+        showNotification('Please enter both username/email and password.', 'error');
+        return;
+      }
+      
+      try {
+        const user = users.find(u => 
+          (u.username === usernameOrEmail || u.email === usernameOrEmail) && 
+          u.password === password
+        );
+        
+        if (user) {
+          currentUser = { id: user.id, username: user.username, email: user.email };
+          localStorage.setItem('firewatch_current_user', JSON.stringify(currentUser));
+          showNotification(`Welcome back, ${user.username}!`, 'success');
+          showMainApp();
+        } else {
+          showNotification('Invalid username/email or password. Please try again.', 'error');
+          document.getElementById('signin-password').value = '';
+          document.getElementById('signin-username').focus();
+        }
+      } catch (error) {
+        console.error('Signin error:', error);
+        showNotification('Login failed. Please try again.', 'error');
+      }
+    });
+
+    // Logout function
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('firewatch_current_user');
+      hideMainApp();
+      
+      // Reset forms
+      document.getElementById('signin-form').reset();
+      document.getElementById('signup-form').reset();
+      showSignin();
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (body.getAttribute('data-theme') === 'dark') {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('firewatch_theme', 'light');
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('firewatch_theme', 'dark');
+      }
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('firewatch_theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+    document.getElementById('theme-icon').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+    // Image upload handler with better error handling
+    document.getElementById('img-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const file = e.target.querySelector('input[type="file"]').files[0];
+      if (!file) {
+        showNotification("Please select an image", "error");
+        return;
+      }
+
+      // Show loading state
+      const btn = e.target.querySelector('button');
+      const btnText = btn.querySelector('.btn-text');
+      const loading = btn.querySelector('.loading');
+      
+      btnText.classList.add('hidden');
+      loading.classList.remove('hidden');
+      btn.disabled = true;
+
+      // Show original image
+      const origImg = document.getElementById('orig-img');
+      const origPlaceholder = document.getElementById('orig-placeholder');
+      origImg.src = URL.createObjectURL(file);
+      origImg.style.display = 'block';
+      origPlaceholder.style.display = 'none';
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("/upload_image", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status} ${res.statusText}`);
+        }
+
+        const blob = await res.blob();
+        const resultImg = document.getElementById('result-img');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        
+        resultImg.src = URL.createObjectURL(blob);
+        resultImg.style.display = 'block';
+        resultPlaceholder.style.display = 'none';
+        
+        showNotification("Image processed successfully!", "success");
+      } catch (err) {
+        console.error("Image processing error:", err);
+        
+        // Show specific error messages
+        if (err.message.includes('Failed to fetch') || err.message.includes('ERR_CONNECTION_RESET')) {
+          showNotification("Connection failed. Please check if the Flask server is running on port 5000.", "error");
+        } else if (err.message.includes('Server error')) {
+          showNotification("Server error occurred. Please try again later.", "error");
+        } else {
+          showNotification("Image processing failed. Please try again.", "error");
+        }
+        
+        // Reset result image on error
+        const resultImg = document.getElementById('result-img');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        resultImg.style.display = 'none';
+        resultPlaceholder.style.display = 'block';
+      } finally {
+        // Reset button state
+        btnText.classList.remove('hidden');
+        loading.classList.add('hidden');
+        btn.disabled = false;
+      }
+    });
+
+    // Video stream handler with better error handling
+    document.getElementById('stream-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const file = document.getElementById('stream-video-file').files[0];
+      if (!file) {
+        showNotification("Please select a video file", "error");
+        return;
+      }
+
+      const btn = e.target.querySelector('button');
+      const btnText = btn.querySelector('.btn-text');
+      const loading = btn.querySelector('.loading');
+      
+      btnText.classList.add('hidden');
+      loading.classList.remove('hidden');
+      btn.disabled = true;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const container = document.getElementById("stream-container");
+      container.innerHTML = `
+        <div style="padding: 2rem;">
+          <div class="loading" style="margin: 0 auto 1rem;"></div>
+          <p><b>Uploading and starting stream...</b></p>
+        </div>
+      `;
+
+      try {
+        const res = await fetch("/upload_video", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status} ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        
+        if (data.stream_url) {
+          container.innerHTML = `
+            <h3 style="margin-bottom: 1rem; color: var(--text-color);">
+              <i class="fas fa-broadcast-tower"></i> Live Detection Stream
+            </h3>
+            <img src="${data.stream_url}" style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow);" />
+            <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+              <i class="fas fa-info-circle"></i> Real-time fire detection in progress
+            </p>
+          `;
+          showNotification("Video stream started successfully!", "success");
+        } else {
+          throw new Error("Invalid response from server");
+        }
+      } catch (err) {
+        console.error("Streaming error:", err);
+        
+        // Show specific error messages
+        if (err.message.includes('Failed to fetch') || err.message.includes('ERR_CONNECTION_RESET')) {
+          showNotification("Connection failed. Please check if the Flask server is running.", "error");
+        } else if (err.message.includes('Server error')) {
+          showNotification("Server error occurred. Please try again later.", "error");
+        } else {
+          showNotification("Video streaming failed. Please try again.", "error");
+        }
+        
+        container.innerHTML = `
+          <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem; display: block; color: var(--primary-color);"></i>
+          <p style="color: var(--text-secondary);">Failed to start video stream</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+            Please ensure the Flask server is running and try again.
+          </p>
+        `;
+      } finally {
+        btnText.classList.remove('hidden');
+        loading.classList.add('hidden');
+        btn.disabled = false;
+      }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        if (href && href !== '#') {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+      });
+    });
+
+    // Add subtle animations on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe cards for animation
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        document.querySelectorAll('.card').forEach((card, index) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(30px)';
+          card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          card.style.transitionDelay = `${index * 0.1}s`;
+          observer.observe(card);
+        });
+      }, 100);
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + K for theme toggle
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleTheme();
+      }
+      
+      // Escape to close auth forms (if needed)
+      if (e.key === 'Escape' && !currentUser) {
+        // Could add functionality to close auth if needed
+      }
+    });
+
+    // Add file drag and drop support
+    function setupFileDrop(inputId, dropZoneId) {
+      const input = document.getElementById(inputId);
+      const dropZone = input.closest('.form-group');
+      
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight(e) {
+        dropZone.style.backgroundColor = 'var(--primary-color)';
+        dropZone.style.opacity = '0.8';
+        dropZone.style.borderRadius = '12px';
+      }
+
+      function unhighlight(e) {
+        dropZone.style.backgroundColor = '';
+        dropZone.style.opacity = '';
+      }
+
+      dropZone.addEventListener('drop', handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+          input.files = files;
+          
+          // Trigger change event for file preview
+          const event = new Event('change', { bubbles: true });
+          input.dispatchEvent(event);
+        }
+      }
+    }
+
+    // Initialize drag and drop when main app loads
+    function initializeDragDrop() {
+      setupFileDrop('image-upload');
+      setupFileDrop('stream-video-file');
+    }
+
+    // Call initialization after main app shows
+    const originalShowMainApp = showMainApp;
+    showMainApp = function() {
+      originalShowMainApp();
+      setTimeout(initializeDragDrop, 100);
+    };
+
+    // Add loading states and better error handling for all async operations
+    async function handleAsyncOperation(operation, loadingElement, successCallback, errorCallback) {
+      try {
+        loadingElement.classList.remove('hidden');
+        const result = await operation();
+        if (successCallback) successCallback(result);
+      } catch (error) {
+        console.error('Operation failed:', error);
+        if (errorCallback) errorCallback(error);
+        else alert('Operation failed. Please try again.');
+      } finally {
+        loadingElement.classList.add('hidden');
+      }
+    }
+
+    // Enhanced form validation with better error messaging
+    function validateForm(formId) {
+      const form = document.getElementById(formId);
+      const inputs = form.querySelectorAll('input[required]');
+      let isValid = true;
+      let firstError = null;
+
+      inputs.forEach(input => {
+        const value = input.value.trim();
+        
+        // Remove previous error styling
+        input.style.borderColor = '';
+        input.style.boxShadow = '';
+        
+        if (!value) {
+          input.style.borderColor = 'var(--primary-color)';
+          input.style.boxShadow = '0 0 0 3px rgba(255, 107, 53, 0.1)';
+          isValid = false;
+          if (!firstError) firstError = input;
+        }
+        
+        // Email validation
+        if (input.type === 'email' && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            input.style.borderColor = 'var(--primary-color)';
+            input.style.boxShadow = '0 0 0 3px rgba(255, 107, 53, 0.1)';
+            isValid = false;
+            if (!firstError) firstError = input;
+          }
+        }
+        
+        // Password strength validation
+        if (input.id === 'signup-password' && value) {
+          if (value.length < 6) {
+            input.style.borderColor = 'var(--primary-color)';
+            input.style.boxShadow = '0 0 0 3px rgba(255, 107, 53, 0.1)';
+            isValid = false;
+            if (!firstError) firstError = input;
+          }
+        }
+      });
+
+      // Focus on first error field
+      if (firstError) {
+        firstError.focus();
+      }
+
+      return isValid;
+    }
+
+    // Update signup form handler with better validation
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (!validateForm('signup-form')) {
+        showNotification('Please fill in all fields correctly.', 'error');
+        return;
+      }
+      
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+      
+      // Additional validation
+      if (username.length < 3) {
+        showNotification('Username must be at least 3 characters long.', 'error');
+        document.getElementById('signup-username').focus();
+        return;
+      }
+      
+      if (password.length < 6) {
+        showNotification('Password must be at least 6 characters long.', 'error');
+        document.getElementById('signup-password').focus();
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        document.getElementById('signup-confirm').focus();
+        return;
+      }
+      
+      if (users.find(u => u.username === username || u.email === email)) {
+        showNotification('Username or email already exists!', 'error');
+        return;
+      }
+      
+      try {
+        const newUser = {
+          id: Date.now(),
+          username: username,
+          email: email,
+          password: password, // In production, this should be hashed
+          createdAt: new Date().toISOString()
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('firewatch_users', JSON.stringify(users));
+        
+        currentUser = { id: newUser.id, username: newUser.username, email: newUser.email };
+        localStorage.setItem('firewatch_current_user', JSON.stringify(currentUser));
+        
+        showNotification('Account created successfully! Welcome to FireWatch AI.', 'success');
+        showMainApp();
+      } catch (error) {
+        console.error('Signup error:', error);
+        showNotification('Failed to create account. Please try again.', 'error');
+      }
+    });
+
+    // Add real-time input validation feedback with better error handling
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('blur', function() {
+        if (this.hasAttribute('required') && !this.value.trim()) {
+          this.style.borderColor = 'var(--primary-color)';
+          this.style.boxShadow = '0 0 0 3px rgba(255, 107, 53, 0.1)';
+        } else {
+          this.style.borderColor = '';
+          this.style.boxShadow = '';
+        }
+      });
+      
+      input.addEventListener('input', function() {
+        // Clear error styling when user starts typing
+        if (this.style.borderColor === 'rgb(255, 107, 53)' || 
+            this.style.borderColor === 'var(--primary-color)') {
+          this.style.borderColor = '';
+          this.style.boxShadow = '';
+        }
+      });
+    });
+
+    // Add notification system for better user feedback
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : 'var(--primary-color)'};
+        color: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        z-index: 9999;
+        transform: translateX(400px);
+        transition: var(--transition);
+        max-width: 300px;
+      `;
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+          <span>${message}</span>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Remove the alert override since we now handle notifications properly
+    // showNotification function is already defined above and working properly
+  </script>
+</body>
+</html>
