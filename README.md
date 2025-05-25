@@ -3,7 +3,7 @@
 A powerful computer vision system that leverages YOLOv8 for detecting **fire** and **smoke** from:
 - 🌄 Uploaded images
 - 🎥 Video streams
-- 🎦 Live webcam feeds
+- 🎦 Live webcam feed
 
 Alerts are sent in real time using **Telegram Bot API** when fire confidence exceeds a critical threshold.
 
