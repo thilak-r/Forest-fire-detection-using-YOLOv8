@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: forest-fire
+    env: python
+    region: oregon
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python combined.py"
+    plan: free
