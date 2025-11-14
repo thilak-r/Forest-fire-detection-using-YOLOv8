@@ -1,15 +1,17 @@
-# 🔥 DL Based Real-Time Forest Fire Detection from Live Feed
 
-A powerful computer vision system that leverages YOLOv8 for detecting **fire** and **smoke** from:
-- 🌄 Uploaded images
-- 🎥 Video streams
-- 🎦 Live webcam feed
+# 🔥 DL Based Real-Time Forest Fire Detection from Live Feed  
+**Keywords:** Forest Fire Detection, Real-Time Fire Monitoring, YOLOv8 Fire Detection, Smoke Detection AI, Computer Vision Wildfire System, Fire Alert System, Live Feed Fire Detection, Flask Fire Detection App, Telegram Fire Alert, Wildfire Prevention AI, Deep Learning Fire Detection  
+
+A powerful computer vision system that leverages **YOLOv8** for detecting **fire** and **smoke** from:  
+- 🌄 Uploaded images  
+- 🎥 Video streams  
+- 🎦 Live webcam feed  
 
 Alerts are sent in real time using **Telegram Bot API** when fire confidence exceeds a critical threshold.
 
 ---
 
-<h2>🚀 Outputs from the System</h2>
+## 🚀 Outputs from the System
 
 ### 🔥 Fire Detection Output
 
@@ -19,19 +21,17 @@ Alerts are sent in real time using **Telegram Bot API** when fire confidence exc
 **Detection Video:**  
 <img src="https://raw.githubusercontent.com/ThilakAmalkar/fire-results/main/fireOutputs/fire-op-2x.gif" width="700" height="520" />
 
-
-
 ---
 
 ## 💻 Project Frontend
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/ThilakAmalkar/fire-results/main/fireOutputs/Screenshot%202025-05-24%20191706.png" width="65%" />
-<h2>📡 Real-Time Detection and Alert System</h2>
+  <h2>📡 Real-Time Detection and Alert System</h2>
 
 <table>
   <tr>
-    <td align="center" width="50%" >
+    <td align="center" width="50%">
       <img src="https://raw.githubusercontent.com/ThilakAmalkar/fire-results/main/fireOutputs/realTime.jpg" width="90%" style="border: 1px solid #ccc; border-radius: 8px;" />
       <p><strong>Live Fire Detection Feed</strong></p>
     </td>
@@ -46,7 +46,7 @@ Alerts are sent in real time using **Telegram Bot API** when fire confidence exc
 ⚠️ Fire alerts are triggered when fire is detected with confidence > 0.75  
 💬 Alerts are delivered instantly via <strong>Telegram Bot</strong>
 </blockquote>
-
+</div>
 
 ---
 
@@ -92,10 +92,11 @@ cd Forest-fire-detection
 
 # (Optional) Create a virtual environment
 python -m venv venv
+
 # Activate the environment
-# On Windows:
+# Windows:
 venv\Scripts\activate
-# On macOS/Linux:
+# macOS/Linux:
 source venv/bin/activate
 
 # Install dependencies
@@ -103,18 +104,28 @@ pip install -r requirements.txt
 
 # Run the Flask app
 python app.py
-```
+````
 
 ---
+
 ## 📚 References & Resources
-### 📂 Dataset: [DFireDataset](https://github.com/gaiasd/DFireDataset) 
-### 📖 Article: [Stay Ahead of the Flames – Wildfire Detection with YOLOv8](https://medium.com/institute-of-smart-systems-and-ai/stay-ahead-of-the-flames-a-comprehensive-guide-to-wildfire-prevention-with-yolov8-3eb8edd1121a) <br>
-### 💬 Telegram Bot API: Telegram Bot Documentation <br>
 
----
-## 👨‍🏫 Project Mentorship 
-Developed under the guidance of 
-Dr. Agughasi Victor Ikechukwu
-(Asst. Prof. Dept. of CSE-AI)
----
- <a href="https://www.buymeacoffee.com/thilak"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=thilak&button_colour=FFDD00&font_colour=000000&font_family=Bree&outline_colour=000000&coffee_colour=ffffff" /></a> </div>
+📂 Dataset: [DFireDataset](https://github.com/gaiasd/DFireDataset)
+📖 Article: [Stay Ahead of the Flames – Wildfire Detection with YOLOv8](https://medium.com/institute-of-smart-systems-and-ai/stay-ahead-of-the-flames-a-comprehensive-guide-to-wildfire-prevention-with-yolov8-3eb8edd1121a)
+
+## ✅ Keywords
+- Forest Fire Detection System  
+- Real-Time Fire Detection  
+- YOLOv8 Fire and Smoke Detection  
+- Wildfire Monitoring AI  
+- Fire Alert System Telegram  
+- Deep Learning Fire Detection  
+- Computer Vision Forest Safety  
+- Smoke Detection from Live Feed  
+- Flask Fire Detection App  
+- AI-based Fire Prevention  
+- Wildfire Early Warning System  
+- Image and Video Fire Detection  
+- Live Webcam Fire Detection  
+- Fire Detection Dataset  
+- Smart Surveillance Fire Detection  
