@@ -14,10 +14,6 @@
     <img src="https://img.shields.io/badge/Flask-2.0%2B-green.svg" alt="Flask">
   </a>
 
-  <a href="https://www.mongodb.com/">
-    <img src="https://img.shields.io/badge/MongoDB-5.0%2B-green.svg" alt="MongoDB">
-  </a>
-
   <img src="https://visitor-badge.laobi.icu/badge?page_id=thilak-r.Forest-fire-detection-using-YOLOv8" alt="Visitors">
 
 </p>
