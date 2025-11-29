@@ -1,5 +1,27 @@
 
 # 🔥 DL Based Real-Time Forest Fire Detection from Live Feed  
+<p align="center">
+
+  <a href="https://opensource.org/licenses/Apache-2.0">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
+  </a>
+
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue.svg" alt="Python">
+  </a>
+
+  <a href="https://flask.palletsprojects.com/">
+    <img src="https://img.shields.io/badge/Flask-2.0%2B-green.svg" alt="Flask">
+  </a>
+
+  <a href="https://www.mongodb.com/">
+    <img src="https://img.shields.io/badge/MongoDB-5.0%2B-green.svg" alt="MongoDB">
+  </a>
+
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=thilak-r.Forest-fire-detection-using-YOLOv8" alt="Visitors">
+
+</p>
+
 **Keywords:** Forest Fire Detection, Real-Time Fire Monitoring, YOLOv8 Fire Detection, Smoke Detection AI, Computer Vision Wildfire System, Fire Alert System, Live Feed Fire Detection, Flask Fire Detection App, Telegram Fire Alert, Wildfire Prevention AI, Deep Learning Fire Detection  
 
 A powerful computer vision system that leverages **YOLOv8** for detecting **fire** and **smoke** from:  
